@@ -37,6 +37,12 @@ importers:
         specifier: ^3.0.2
         version: 3.2.11(terser@5.43.1)
 
+  apps/examples: {}
+
+  packages/shared-utils: {}
+
+  packages/ui-components: {}
+
 packages:
 
   '@ampproject/remapping@2.3.0':
