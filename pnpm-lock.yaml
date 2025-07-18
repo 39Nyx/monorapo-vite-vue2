@@ -39,10 +39,10 @@ importers:
 
   apps/examples:
     dependencies:
-      shared-utils:
+      '@39nyx/shared-utils':
         specifier: workspace:^
         version: link:../../packages/shared-utils
-      ui-components:
+      '@39nyx/ui-components':
         specifier: workspace:^
         version: link:../../packages/ui-components
 
