@@ -2,10 +2,11 @@
   "name": "monorapo-vite-vue2",
   "version": "0.0.0",
   "scripts": {
-    "example:dev": "pnpm --filter examples dev",
+    "dev:examples": "pnpm --filter examples dev",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "build:lib": "pnpm --filter @39nyx/* run build"
   },
   "dependencies": {
     "vue": "^2.7.7",
