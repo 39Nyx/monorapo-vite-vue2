@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { sum } from 'shared-utils'
-import { MyButton } from 'ui-components'
+import { sum } from '@39nyx/shared-utils'
+import { MyButton } from '@39nyx/ui-components'
 
 const count1 = ref(0)
 const count2 = ref(0)
