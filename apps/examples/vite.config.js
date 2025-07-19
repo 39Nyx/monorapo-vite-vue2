@@ -7,7 +7,8 @@ import vue2Jsx from '@vitejs/plugin-vue2-jsx'
 function getAlias(mode) {
   if (mode === 'development') {
     return {
-      '@39nyx/ui-components': fileURLToPath(new URL('../../packages/ui-components/src', import.meta.url))
+      '@39nyx/ui-components': fileURLToPath(new URL('../../packages/ui-components/src', import.meta.url)),
+      '@39nyx/shared-utils': fileURLToPath(new URL('../../packages/shared-utils/src', import.meta.url)),
     }
   }
   return {}
