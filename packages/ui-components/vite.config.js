@@ -1,6 +1,14 @@
 import { defineConfig } from 'vite'
 import vue2 from '@vitejs/plugin-vue2'
 import vue2Jsx from '@vitejs/plugin-vue2-jsx'
+import { relative, dirname, join, basename, parse } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const cssPathMap = new Map()
+const cssAssetsMap = new Map()
+
+const currentFilePath = fileURLToPath(import.meta.url)
+const currentDirPath = dirname(currentFilePath)
 
 export default defineConfig({
   plugins: [
@@ -8,17 +16,22 @@ export default defineConfig({
     vue2Jsx(),
     {
       name: 'force-css-inject',
+      transform(code, id) {
+        if (id.endsWith('&lang.css')) {
+          const relativePath = relative(join(currentDirPath, 'src'), id)
+          const [prefix] = relativePath.split('?')
+          cssPathMap.set(prefix, basename(relativePath))
+          cssAssetsMap.set(basename(relativePath), parse(relativePath).dir)
+        }
+      },
       generateBundle(opts, bundle) {
         for (const [, chunk] of Object.entries(bundle)) {
           if (chunk.facadeModuleId && chunk.facadeModuleId.endsWith('.vue')) {
-            const regexp = /scoped_[a-z0-9]+_lang\.js$/
-            const findResult = (chunk.imports || []).find(item => {
-              return regexp.test(item)
-            })
-            if (findResult) {
-              const start = findResult.lastIndexOf('/')
-              const url = findResult.slice(start, findResult.length - 3)
-              chunk.code = `import '.${ url }.css';\n${ chunk.code }`
+            const relativePath = relative(join(currentDirPath, 'src'), chunk.facadeModuleId)
+            if (cssPathMap.has(relativePath)) {
+              const cssFileName = cssPathMap.get(relativePath)
+              const cssFilePath = cssFileName.replace(/[=&?]/g, '_')
+              chunk.code = `import './${ cssFilePath }';\n${ chunk.code }`
             }
           }
         }
@@ -53,14 +66,11 @@ export default defineConfig({
         entryFileNames: '[name].js',
         // 静态资源规则
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name.endsWith('&lang.css') && assetInfo.name.startsWith('src/')) {
-            const lastIndex = assetInfo.name.lastIndexOf('/')
-            if (lastIndex !== -1) {
-              const prefix = assetInfo.name.slice(4, lastIndex)
-              return `${ prefix }/[name].css`
-            }
+          const name = basename(assetInfo.name)
+          if (cssAssetsMap.has(name)) {
+            return `${ cssAssetsMap.get(name) }/[name].css`
           }
-          return 'chunks/[name]-[hash].css'
+          return 'assets/[name].css'
         }
       }
     }
