@@ -1,49 +1,13 @@
 import { defineConfig } from 'vite'
 import vue2 from '@vitejs/plugin-vue2'
 import vue2Jsx from '@vitejs/plugin-vue2-jsx'
-import { relative, dirname, join, basename, parse } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const cssPathMap = new Map()
-const cssAssetsMap = new Map()
-
-const currentFilePath = fileURLToPath(import.meta.url)
-const currentDirPath = dirname(currentFilePath)
+import { forceCSSInject, assetFileNames } from '@39nyx/force-css-inject'
 
 export default defineConfig({
   plugins: [
     vue2(),
     vue2Jsx(),
-    {
-      name: 'force-css-inject',
-      transform(code, id) {
-        if (id.endsWith('&lang.css')) {
-          const relativePath = relative(join(currentDirPath, 'src'), id)
-          const [prefix] = relativePath.split('?')
-          if (cssAssetsMap.has(prefix)) {
-            console.warn(`Duplicate CSS file found: ${ prefix }`)
-          }
-          cssPathMap.set(prefix, basename(relativePath))
-          const cssFineName = basename(relativePath)
-          if (cssAssetsMap.has(cssFineName)) {
-            console.warn(`Duplicate CSS file found: ${ cssFineName }`)
-          }
-          cssAssetsMap.set(cssFineName, parse(relativePath).dir)
-        }
-      },
-      generateBundle(opts, bundle) {
-        for (const [, chunk] of Object.entries(bundle)) {
-          if (chunk.facadeModuleId && chunk.facadeModuleId.endsWith('.vue')) {
-            const relativePath = relative(join(currentDirPath, 'src'), chunk.facadeModuleId)
-            if (cssPathMap.has(relativePath)) {
-              const cssFileName = cssPathMap.get(relativePath)
-              const cssFilePath = cssFileName.replace(/[=&?]/g, '_')
-              chunk.code = `import './${ cssFilePath }';\n${ chunk.code }`
-            }
-          }
-        }
-      }
-    }
+    forceCSSInject(import.meta.url)
   ],
   build: {
     lib: {
@@ -73,11 +37,7 @@ export default defineConfig({
         entryFileNames: '[name].js',
         // 静态资源规则
         assetFileNames: (assetInfo) => {
-          const name = basename(assetInfo.name)
-          if (cssAssetsMap.has(name)) {
-            return `${ cssAssetsMap.get(name) }/[name].css`
-          }
-          return 'assets/[name].css'
+          return assetFileNames(assetInfo)
         }
       }
     }
