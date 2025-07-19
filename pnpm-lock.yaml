@@ -46,9 +46,15 @@ importers:
         specifier: workspace:^
         version: link:../../packages/ui-components
 
+  packages/force-css-inject: {}
+
   packages/shared-utils: {}
 
-  packages/ui-components: {}
+  packages/ui-components:
+    devDependencies:
+      '@39nyx/force-css-inject':
+        specifier: workspace:^
+        version: link:../force-css-inject
 
 packages:
 
