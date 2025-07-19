@@ -20,8 +20,15 @@ export default defineConfig({
         if (id.endsWith('&lang.css')) {
           const relativePath = relative(join(currentDirPath, 'src'), id)
           const [prefix] = relativePath.split('?')
+          if (cssAssetsMap.has(prefix)) {
+            console.warn(`Duplicate CSS file found: ${ prefix }`)
+          }
           cssPathMap.set(prefix, basename(relativePath))
-          cssAssetsMap.set(basename(relativePath), parse(relativePath).dir)
+          const cssFineName = basename(relativePath)
+          if (cssAssetsMap.has(cssFineName)) {
+            console.warn(`Duplicate CSS file found: ${ cssFineName }`)
+          }
+          cssAssetsMap.set(cssFineName, parse(relativePath).dir)
         }
       },
       generateBundle(opts, bundle) {
