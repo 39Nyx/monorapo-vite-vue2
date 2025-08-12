@@ -24,7 +24,9 @@ export default {
   </button>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+$text-color: #ffffff !default;
+
 button {
   align-items: center;
   background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
@@ -32,7 +34,7 @@ button {
   border-radius: 8px;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
   box-sizing: border-box;
-  color: #ffffff;
+  color: $text-color;
   display: flex;
   font-size: 18px;
   justify-content: center;
