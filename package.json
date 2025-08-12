@@ -7,9 +7,10 @@
     "build": "vite build",
     "preview": "vite preview --port 4173",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "build:lib": "pnpm --filter @39nyx/* run build"
+    "build:lib": "pnpm --filter @39nyx/ui-components run build"
   },
   "dependencies": {
+    "sass": "^1.90.0",
     "vue": "^2.7.7",
     "vue-router": "^3.5.4"
   },
