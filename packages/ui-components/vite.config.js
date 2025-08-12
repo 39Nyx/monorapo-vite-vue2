@@ -17,7 +17,6 @@ export default defineConfig({
       formats: ['es']
     },
     cssTarget: ['chrome112'],
-    // 启用CSS代码切割，实现按需引入
     cssCodeSplit: true,
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
