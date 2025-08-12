@@ -25,30 +25,30 @@ export default {
 </template>
 
 <style scoped lang="scss">
-$text-color: #ffffff !default;
+@use '../../styles/theme.scss';
 
 button {
   align-items: center;
-  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  background-image: linear-gradient(144deg, var(--ui-secondary-color), var(--ui-primary-color) 50%, var(--ui-accent-color));
   border: 0;
-  border-radius: 8px;
-  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  border-radius: var(--ui-border-radius);
+  box-shadow: var(--ui-box-shadow);
   box-sizing: border-box;
-  color: $text-color;
+  color: var(--ui-text-color);
   display: flex;
-  font-size: 18px;
+  font-size: var(--ui-button-font-size);
   justify-content: center;
   line-height: 1em;
   max-width: 100%;
-  min-width: 140px;
-  padding: 3px;
+  min-width: var(--ui-button-min-width);
+  padding: var(--ui-button-padding);
   text-decoration: none;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all var(--ui-transition-duration);
 }
 
 button:active,
@@ -57,9 +57,9 @@ button:hover {
 }
 
 button span {
-  background-color: rgb(5, 6, 45);
+  background-color: var(--ui-background-color);
   padding: 16px 24px;
-  border-radius: 6px;
+  border-radius: calc(var(--ui-border-radius) - 2px);
   width: 100%;
   height: 100%;
   transition: 300ms;
