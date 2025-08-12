@@ -18,12 +18,11 @@ export function forceCSSInject(baseUrl) {
       if (id.endsWith('.vue') && id.includes('components/')) {
         // 提取组件路径信息
         const relativePath = relative(join(currentDirPath, 'src'), id)
-        console.log('relativePath: ', relativePath)
         const componentPath = relativePath.split('components/')[1].split('/index.vue')[0]
-        
         // 存储组件路径，用于后续处理
         componentStyles.set(id, {
           componentPath,
+          componentOriginPath: relativePath.split('/index.vue')[0],
           hasStyle: false
         })
       }
@@ -35,24 +34,12 @@ export function forceCSSInject(baseUrl) {
           if (id.includes(vueId)) {
             info.hasStyle = true
             info.styleId = id
+            info.styleCssId = id.replace('scss', 'css')
             break
           }
         }
       }
       
-      return null
-    },
-    
-    // 在构建完成后处理 CSS 文件
-    renderChunk(code, chunk) {
-      // 如果是 Vue 组件
-      if (chunk.facadeModuleId && chunk.facadeModuleId.endsWith('.vue')) {
-        const info = componentStyles.get(chunk.facadeModuleId)
-        if (info && info.hasStyle) {
-          // 在组件代码前添加样式导入
-          return `import './style.css';\n${code}`
-        }
-      }
       return null
     },
     
@@ -71,10 +58,11 @@ export function forceCSSInject(baseUrl) {
         if (info.hasStyle) {
           // 找到对应的 CSS 文件
           for (const [cssFileName, cssChunk] of cssFiles.entries()) {
+            const cssFileRealName = cssFileName.startsWith('assets/')? cssFileName.split('assets/')[1] : cssFileName
             // 检查是否为该组件的样式
-            if (cssFileName.includes('scoped') && cssChunk.source) {
+            if (info.styleCssId.replaceAll(/[=&?]/g, '_').includes(cssFileRealName) && cssChunk.source) {
               // 创建新的样式文件
-              const newFileName = `components/${info.componentPath}/style.css`
+              const newFileName = `${info.componentOriginPath}/style.css`
               
               // 添加到 bundle 中
               this.emitFile({
@@ -83,37 +71,11 @@ export function forceCSSInject(baseUrl) {
                 source: cssChunk.source
               })
               
-              console.log(`Created component style: ${newFileName}`)
-              
+
               // 可选：从原始 bundle 中删除该 CSS 文件
               // delete bundle[cssFileName]
               
               break
-            }
-          }
-        }
-      }
-      
-      // 处理 Vue 组件的样式引用
-      for (const [, chunk] of Object.entries(bundle)) {
-        if (chunk.facadeModuleId && chunk.facadeModuleId.endsWith('.vue')) {
-          const relativePath = relative(join(currentDirPath, 'src'), chunk.facadeModuleId)
-          
-          // 提取组件路径信息
-          let componentPath = '';
-          if (relativePath.includes('components/')) {
-            componentPath = relativePath.split('components/')[1].split('/index.vue')[0];
-          }
-          
-          if (cssPathMap.has(relativePath)) {
-            const cssFileName = cssPathMap.get(relativePath)
-            const cssFilePath = cssFileName.replace(/[=&?]/g, '_')
-            
-            // 如果是组件，使用相对路径引入样式
-            if (componentPath) {
-              chunk.code = `import './style.css';\n${ chunk.code }`
-            } else {
-              chunk.code = `import './${ cssFilePath }';\n${ chunk.code }`
             }
           }
         }
