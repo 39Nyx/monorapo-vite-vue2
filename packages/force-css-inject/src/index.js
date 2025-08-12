@@ -42,6 +42,19 @@ export function forceCSSInject(baseUrl) {
       
       return null
     },
+
+    // 在构建完成后处理 CSS 文件
+    renderChunk(code, chunk) {
+      // 如果是 Vue 组件
+      if (chunk.facadeModuleId && chunk.facadeModuleId.endsWith('.vue')) {
+        const info = componentStyles.get(chunk.facadeModuleId)
+        if (info && info.hasStyle) {
+          // 在组件代码前添加样式导入
+          return `import './style.css';\n${code}`
+        }
+      }
+      return null
+    },
     
     // 处理最终的打包文件
     generateBundle(options, bundle) {
