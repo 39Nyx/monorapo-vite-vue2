@@ -45,6 +45,9 @@ importers:
       '@39nyx/shared-utils':
         specifier: workspace:^
         version: link:../../packages/shared-utils
+      '@39nyx/theme':
+        specifier: workspace:^
+        version: link:../../packages/theme
       '@39nyx/ui-components':
         specifier: workspace:^
         version: link:../../packages/ui-components
@@ -53,7 +56,13 @@ importers:
 
   packages/shared-utils: {}
 
+  packages/theme: {}
+
   packages/ui-components:
+    dependencies:
+      '@39nyx/theme':
+        specifier: workspace:^
+        version: link:../theme
     devDependencies:
       '@39nyx/force-css-inject':
         specifier: workspace:^
