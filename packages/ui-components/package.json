@@ -11,5 +11,8 @@
   "private": true,
   "devDependencies": {
     "@39nyx/force-css-inject": "workspace:^"
+  },
+  "dependencies": {
+    "@39nyx/theme": "workspace:^"
   }
 }
