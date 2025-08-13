@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@39nyx/shared-utils": "workspace:^",
+    "@39nyx/theme": "workspace:^",
     "@39nyx/ui-components": "workspace:^"
   }
 }

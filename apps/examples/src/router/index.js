@@ -14,6 +14,11 @@ const router = new VueRouter({
       component: HomeView
     },
     {
+      path: '/theme',
+      name: 'theme',
+      component: () => import('../views/ThemeDemo.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
