@@ -1,0 +1,38 @@
+// 使用变量
+@use './variables.scss' as vars;
+
+// 导入主题
+@use './theme-light.scss';
+@use './theme-dark.scss';
+
+// 添加主题过渡效果
+:root {
+  transition: vars.$theme-transition;
+}
+
+// 导出主题相关的 CSS 变量为 SCSS 变量，方便在组件中使用
+$primary-color: var(--ui-primary-color);
+$secondary-color: var(--ui-secondary-color);
+$accent-color: var(--ui-accent-color);
+$text-color: var(--ui-text-color);
+$background-color: var(--ui-background-color);
+$border-radius: var(--ui-border-radius);
+$button-min-width: var(--ui-button-min-width);
+$button-padding: var(--ui-button-padding);
+$button-font-size: var(--ui-button-font-size);
+$transition-duration: var(--ui-transition-duration);
+$box-shadow: var(--ui-box-shadow);
+
+// 主题混合器，用于在组件中根据主题应用不同的样式
+@mixin themed() {
+  @each $theme, $class in vars.$themes {
+    :root.#{$class} & {
+      @content;
+    }
+  }
+}
+
+// 重新导出变量，使其他文件可以通过 index.scss 访问这些变量
+$themes: vars.$themes;
+$default-theme: vars.$default-theme;
+$theme-transition: vars.$theme-transition;

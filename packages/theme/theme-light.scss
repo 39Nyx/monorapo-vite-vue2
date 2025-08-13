@@ -1,0 +1,21 @@
+// 浅色主题变量
+:root.theme-light {
+  // 颜色系统
+  --ui-primary-color: #3a86ff;
+  --ui-secondary-color: #8338ec;
+  --ui-accent-color: #ff006e;
+  --ui-text-color: #333333;
+  --ui-background-color: #ffffff;
+  
+  // 尺寸系统
+  --ui-border-radius: 8px;
+  --ui-button-min-width: 140px;
+  --ui-button-padding: 3px;
+  --ui-button-font-size: 18px;
+  
+  // 动画
+  --ui-transition-duration: 0.3s;
+  
+  // 阴影
+  --ui-box-shadow: rgba(0, 0, 0, 0.1) 0 10px 20px -5px;
+}

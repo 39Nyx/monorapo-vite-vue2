@@ -1,0 +1,21 @@
+// 深色主题变量
+:root.theme-dark {
+  // 颜色系统
+  --ui-primary-color: #5b42f3;
+  --ui-secondary-color: #af40ff;
+  --ui-accent-color: #00ddeb;
+  --ui-text-color: #ffffff;
+  --ui-background-color: rgb(5, 6, 45);
+  
+  // 尺寸系统
+  --ui-border-radius: 8px;
+  --ui-button-min-width: 140px;
+  --ui-button-padding: 3px;
+  --ui-button-font-size: 18px;
+  
+  // 动画
+  --ui-transition-duration: 0.3s;
+  
+  // 阴影
+  --ui-box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+}

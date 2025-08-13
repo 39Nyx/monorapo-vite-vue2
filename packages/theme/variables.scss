@@ -1,0 +1,13 @@
+// 共享变量
+$themes: (
+  'light': 'theme-light',
+  'dark': 'theme-dark'
+) !default;
+
+// 默认主题
+$default-theme: 'dark' !default;
+
+// 过渡效果
+$theme-transition: all 0.3s ease !default;
+
+// 使用 !default 标志允许这些变量被覆盖
